@@ -1,4 +1,5 @@
 # JSON with GSON and abstract classes
+# Gson 序列化反序列化抽象类
 
 ---
 Reference: http://ovaraksin.blogspot.com.es/2011/05/json-with-gson-and-abstract-classes.html
