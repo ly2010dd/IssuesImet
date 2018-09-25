@@ -1,4 +1,4 @@
-# Vmware安装Centos7
+# 集群初始环境搭建
 > 参考：
 > - 通过VMware搭建分布式集群基础环境 https://blog.csdn.net/cndmss/article/details/80149952 
 > - 在vmware上安装centos7以及网络配置
