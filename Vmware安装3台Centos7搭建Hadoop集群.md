@@ -66,3 +66,162 @@ systemctl stop firewalld.service
 ```
 vim /etc/hostname
 ```
+
+# Hadoop分布式模式
+
+> 参考：
+> - Hadoop 2.7 cluster installation and configuration on RHEL7/CentOS7 http://fibrevillage.com/storage/617-hadoop-2-7-cluster-installation-and-configuration-on-rhel7-centos7
+
+### 每台机器创建hadoop账户
+```
+useradd hadoop
+passwd hadoop
+```
+
+### 每台机器修改host
+```
+vim /etc/hosts
+192.168.207.111 master
+192.168.207.112 slave1
+192.168.207.113 slave2
+```
+
+### 配置相互免密登录
+```
+#每台执行
+su - hadoop
+ssh-keygen -t rsa
+ssh-copy-id -i ~/.ssh/id_rsa.pub hadoop@kmaster
+ssh-copy-id -i ~/.ssh/id_rsa.pub hadoop@slave1
+ssh-copy-id -i ~/.ssh/id_rsa.pub hadoop@slave2
+exit
+```
+
+### 解压tar包在master上
+```
+mkdir -p /opt/hadoop
+chown hadoop:hadoop /opt/hadoop
+su - hadoop
+cd /opt/hadoop
+上传hadoop的tar包
+tar xzf hadoop-2.7.3.tar.gz
+ln -s  /opt/hadoop/hadoop-2.7.6/ /opt/hadoop/hadoop
+```
+
+### 设置环境变量
+```
+export HADOOP_HOME=/opt/hadoop/hadoop
+export HADOOP_INSTALL=$HADOOP_HOME
+export HADOOP_MAPRED_HOME=$HADOOP_HOME
+export HADOOP_COMMON_HOME=$HADOOP_HOME
+export HADOOP_HDFS_HOME=$HADOOP_HOME
+export YARN_HOME=$HADOOP_HOME
+export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
+export PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin
+
+source ~/.bashrc
+```
+```
+修改$HADOOP_HOME/etc/hadoop/hadoop-env.sh
+export JAVA_HOME=/usr/local/java/jdk1.8.0_171
+export HADOOP_OPTS=-Djava.net.preferIPv4Stack=true
+```
+
+### 配置文件配置
+> 参考：
+> - CentOS7.5搭建Hadoop2.7.6完全分布式集群
+http://www.cnblogs.com/frankdeng/p/9047698.html
+
+集群规划部署
+
+节点名称 | NN1 | NN2  | DN | RM | NM
+---|---|---|---|---|---
+master | NameNode |     | DN |    | NM
+slave1 |          | NN2 | DN | RM | NM
+slave2 |          |     | DN |    | NM
+
+
+core-site.xml
+```
+<configuration>
+        <property>
+                <name>fs.defaultFS</name>
+                <value>hdfs://master:9000</value>
+        </property>
+        <property>
+                <name>hadoop.tmp.dir</name>
+                <value>/opt/hadoop/tmp</value>
+        </property>
+        <property>
+                <name>hadoop.proxyuser.root.groups</name>
+                <value>*</value>
+        </property>
+        <property>
+                <name>hadoop.proxyuser.root.hosts</name>
+                <value>*</value>
+        </property>
+</configuration>
+```
+
+hdfs-site.xml
+```
+<configuration>
+    <!-- 设置dfs副本数，不设置默认是3个   -->
+    <property>
+        <name>dfs.replication</name>
+        <value>2</value>
+    </property>
+    <!-- 设置secondname的端口   -->
+    <property>
+        <name>dfs.namenode.secondary.http-address</name>
+        <value>slave1:50090</value>
+    </property>
+
+</configuration>
+```
+
+slaves
+```
+master
+slave1
+slave2
+```
+
+mapred-site.xml
+```
+<configuration>
+    <!-- 指定mr运行在yarn上 -->
+    <property>
+     <name>mapreduce.framework.name</name>
+     <value>yarn</value>
+    </property>
+</configuration>
+```
+
+yarn-site.xml
+```
+<configuration>
+     <!-- Site specific YARN configuration properties -->
+     <!-- reducer获取数据的方式 -->
+     <property>
+        <name>yarn.nodemanager.aux-services</name>
+        <value>mapreduce_shuffle</value>
+     </property>
+     <!-- 指定YARN的ResourceManager的地址 -->
+     <property>
+        <name>yarn.resourcemanager.hostname</name>
+        <value>slave1</value>
+     </property>
+</configuration>
+```
+
+### 拷贝到slave1和slave2
+```
+# to slave1
+scp -r hadoop-2.7.6/ admin@node22:`pwd`scp -r hadoop-2.7.6/ hadoop@slave1:`pwd`
+ln -s  /opt/hadoop/hadoop-2.7.6/ /opt/hadoop/hadoop
+# to slave2
+scp -r hadoop-2.7.6/ admin@node22:`pwd`scp -r hadoop-2.7.6/ hadoop@slave2:`pwd`
+ln -s  /opt/hadoop/hadoop-2.7.6/ /opt/hadoop/hadoop
+```
+
