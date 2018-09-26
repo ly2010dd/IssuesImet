@@ -225,3 +225,10 @@ scp -r hadoop-2.7.6/ admin@node22:`pwd`scp -r hadoop-2.7.6/ hadoop@slave2:`pwd`
 ln -s  /opt/hadoop/hadoop-2.7.6/ /opt/hadoop/hadoop
 ```
 
+### 启动集群
+```
+hdfs namenode -format　
+start-dfs.sh
+start-yarn.sh
+jps
+```
