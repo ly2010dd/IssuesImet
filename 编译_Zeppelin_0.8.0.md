@@ -1,4 +1,4 @@
-# 编译Zeppelin 0.8.0
+# 编译 Zeppelin 0.8.0
 > 参考：
 > - Zeppelin官网build教程 http://zeppelin.apache.org/docs/0.8.0/setup/basics/how_to_build.html
 
