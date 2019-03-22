@@ -91,7 +91,7 @@ vim /etc/hosts
 #每台执行
 su - hadoop
 ssh-keygen -t rsa
-ssh-copy-id -i ~/.ssh/id_rsa.pub hadoop@kmaster
+ssh-copy-id -i ~/.ssh/id_rsa.pub hadoop@master
 ssh-copy-id -i ~/.ssh/id_rsa.pub hadoop@slave1
 ssh-copy-id -i ~/.ssh/id_rsa.pub hadoop@slave2
 exit
@@ -228,7 +228,7 @@ ln -s  /opt/hadoop/hadoop-2.7.6/ /opt/hadoop/hadoop
 ### 启动集群
 ```
 hdfs namenode -format　
-start-dfs.sh
+start-dfs.sh #需要在slave1上执行，因为yarn-site.xml上配置的是在slave1上启动
 start-yarn.sh
 jps
 ```
