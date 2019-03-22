@@ -228,7 +228,7 @@ ln -s  /opt/hadoop/hadoop-2.7.6/ /opt/hadoop/hadoop
 ### 启动集群
 ```
 hdfs namenode -format　
-start-dfs.sh #需要在slave1上执行，因为yarn-site.xml上配置的是在slave1上启动
-start-yarn.sh
+start-dfs.sh 
+start-yarn.sh #需要在slave1上执行，因为yarn-site.xml上配置的是在slave1上启动
 jps
 ```
