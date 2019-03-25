@@ -1,6 +1,8 @@
 # Run第一个MapReduce程序
 > 参考：
 > - Hadoop & Mapreduce Examples: Create your First Program https://www.guru99.com/create-your-first-hadoop-program.html#1
+> 数据：
+> - ./data/SalesJan2009.csv
 
 ##### 在Master节点
 ```
