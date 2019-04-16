@@ -252,7 +252,7 @@ VM-0-8-centos
 
 4. 设置node lables
     
-    > 设置node labels是为使对应的yaml文件找到相应的label    
+> 设置node labels是为使对应的yaml文件找到相应的label    
 
 ```
 kubectl get nodes --show-labels
