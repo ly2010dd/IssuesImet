@@ -252,7 +252,7 @@ VM-0-8-centos
 
 4. 设置node lables
     
-    > 设置node labels是为使对应的yaml文件找到相应的label    
+> 设置node labels是为使对应的yaml文件找到相应的label    
 
 ```
 kubectl get nodes --show-labels
@@ -486,11 +486,8 @@ bin/spark-submit \
 --conf spark.kubernetes.container.image=sherrytima/spark2.4.0:k8s5 \
 hdfs://172.17.0.8:32091/user/spark-terasort-1.1-SNAPSHOT-jar-with-dependencies.jar 1g hdfs://172.17.0.8:32091/user/terasort_in
 
-# 注：这里配置的参数driver（50G/6cores）、executor（100G/24cores）是
-# 根据当前TKE集群配置进行测试得到的最大使用参数，如果再调大log中将抛异
-# 常
-# Initial job has not accepted any resources; check your cluster UI 
-# to ensure that workers are registered and have sufficient resources
+# 注：这里配置的参数driver（50G/6cores）、executor（100G/24cores）是根据当前TKE集群配置进行测试得到的最大使用参数，如果再调大log中将抛异常
+# Initial job has not accepted any resources; check your cluster UI to ensure that workers are registered and have sufficient resources
 ```
 
 5. Sort the data
