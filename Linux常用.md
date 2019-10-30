@@ -869,6 +869,83 @@ free -m  #查看虚拟内存
 	```
 	vim /etc/sysconfig/network
 	
+	# 永久修改，需要重启计算机才生效
+	# 如果想当时立即生效可以使用临时修改命令 hostname liyangpc
 	NETWORKING=yes
 	HOSTNAME=liyangpc
 	```
+	- DNS配置文件
+	
+	HOSTNAME=liyangpc
+	```
+	vim /etc/resolv.conf
+	
+	nameserver 202.106.0.20
+	nameserver 202.106.0.21
+	```
+
+### 虚拟机网络配置
+	- 配置linuxIP地址（如上）
+	- 启动网卡
+	```
+	vim /etc/sysconfig/network-scripts/ifcfg-eth0
+	改ONBOOT=yes
+	
+	service network restart
+	```
+	- 修改UUD（clone或拷贝的虚拟机需要做这步，如果自行安装的虚拟机不需要这步）
+	```
+	vim /etc/sysconfig/network-scripts/ifcfg-eth0
+	删除MAC地址行
+	
+	rm -rf /etc/udev/rules.d/70-persistent-net.rules
+	删除网卡和MAC地址绑定文件
+	
+	重启系统
+	shutdown -r
+	
+	```
+	- 设置虚拟机网络连接方式
+		- 桥接：虚拟机作为一台主机直接用主机的物理网卡VMnet0通信，可以与局域网、公网都能通信
+		- NAT：虚拟机用主机的虚拟网卡VMnet8进行通信，可与局域网通信，可以通过主机做的NAT访问公网
+		- Host Only：虚拟机用主机的虚拟网卡VMnet1进行通信，只可与局域网通信，不能访问公网
+	- 选桥接够修改虚拟机桥接到的具体网卡
+		- 编辑-虚拟网络编辑器-桥接-选是无线网卡还是有线网卡
+
+
+### 网络管理命令
+
+- ifconfig命令
+- ifdown、ifup命令
+	```
+	ifdown eth1
+	ifup eth1
+	```
+- netstat命令
+	```
+	netstat 选项
+	-t: 列出TCP协议端口
+	-u: 列出UDP协议端口
+	-n: 不使用域名和服务器名，而使用IP地址和端口号
+	-l: 仅列出在监听状态的网络服务
+	-a: 列出所有网络连接
+	
+	netstat -tuln
+	netstat -an
+
+	netstat -rn # 查看路由表和网关
+	```
+- route命令
+	```
+	route -n # 查看路由表可以看到网关
+	```
+- nslookup命令
+	```
+	nslookup www.baidu.com # 进行域名与ip的银蛇
+	
+	nslookup 再输入server #能看到dns服务器
+	
+	```
+
+
+
