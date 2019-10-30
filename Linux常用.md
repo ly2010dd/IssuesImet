@@ -826,3 +826,49 @@ free -m  #查看虚拟内存
         i       	忽略闲置和僵死的进程，这是一个开关式命令
         k	        终止一个进程，系统提示输入 PID 及发送的信号值。一般终止进程用 15 信号，不能正常结束则使用 9 信号。安全模式下该命令被屏蔽。
         ```
+
+# Linux网络管理
+
+### Linux配置IP地址的方法
+```
+1. ifconfig命令 临时配置（少用）
+2. setup工具 永久配置（redhat系列特有的）
+3. 修改网络配置文件
+4. 图形界面配置（少用）
+```
+- ifconfig命令
+	- lo本地回环网卡
+	- 临时设置eth0网卡的IP与MASK
+	```
+	ifconfig eth0 192.168.0.200 netmask 255.255.255.0
+	```
+- setup工具设置完后service network restart
+- 修改配置文件
+	- 网卡信息文件
+	```
+	vim /etc/sysconfig/network-scripts/ifcfg-eth0
+	
+	DEVICE=eth0 #物理设备名称（要与文件名对应)
+	BOOTPROTO=static #是否自动获取IP none|static|dhcp（如果设置dhcp则只需要配置DEVICE、BOOTPROTO、HWADDR、ONBOOT、TPYE、USERCTL其他内容不用配）
+	HWADDR=00:0c:29:17:c4:09 #MAC地址
+	NM_CONTROLLED=no #是否由Network Manager图形管理工具管理该网络接口。修改保存后立即生效，无需重启。但有坑，建议设置为no，只有安装了图形界面才有用
+	ONBOOT=yes #是否随网络服务启动 yes|no
+	TYPE=Ethernet #网卡协议类型
+	UUID="ac9b66bf-74fb-4bda-b89f-c66ff84c9571" # 唯一识别码，如果镜像是克隆的则需要手动解决冲突
+	
+	IPADDR=192.168.1.245 # ip地址
+	NETMASK=255.255.255.0 # ip对应的子网掩码
+	GATEWAY=192.168.1.1 #ip对应的网关地址
+	DNS1=192.168.1.1 #指定DNS1地址
+	DNS2=192.168.1.2 #指定DNS2地址（有的话配，没有就不配置）
+	
+	USERCTL= no #非ROOT用户是否允许控制整个设备 yes|no，建议是no
+	IPV6INIT=no #是否执行IPv6 yes:支持IPv6 no:不支持IPv6
+	```
+	- 主机名文件
+	```
+	vim /etc/sysconfig/network
+	
+	NETWORKING=yes
+	HOSTNAME=liyangpc
+	```
