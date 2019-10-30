@@ -946,6 +946,6 @@ free -m  #查看虚拟内存
 	nslookup 再输入server #能看到dns服务器
 	
 	```
-
+- tcpdump命令
 
 
