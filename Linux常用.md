@@ -911,6 +911,47 @@ free -m  #查看虚拟内存
 		- Host Only：虚拟机用主机的虚拟网卡VMnet1进行通信，只可与局域网通信，不能访问公网
 	- 选桥接够修改虚拟机桥接到的具体网卡
 		- 编辑-虚拟网络编辑器-桥接-选是无线网卡还是有线网卡
+	- ifcfg-ens33-bridge
+	```
+	TYPE=Ethernet
+	PROXY_METHOD=none
+	BROWSER_ONLY=no
+	HWADDR=00:0c:29:5e:23:33
+	DEFROUTE=yes
+	IPV4_FAILURE_FATAL=no
+	IPV6INIT=yes
+	IPV6_AUTOCONF=yes
+	IPV6_DEFROUTE=yes
+	IPV6_FAILURE_FATAL=no
+	IPV6_ADDR_GEN_MODE=stable-privacy
+	NAME=ens33
+	UUID=c1a941ed-09f8-4ce6-ba06-2ec2013fc1cc
+	DEVICE=ens33
+
+	NM_CONTROLLER=no
+	ONBOOT=yes
+	BOOTPROTO=static
+	IPADDR=10.72.26.99
+	NETMASK=255.255.255.0
+	GATEWAY=10.72.26.2
+	DNS1=10.76.3.39
+	DNS2=10.76.3.38
+	DNS3=10.14.198.15
+	USERCTL=no
+	```
+	- ifcfg-ens33-nat
+	```
+	TYPE=Ethernet
+	HWADDR=00:0c:29:5e:23:33
+	NAME=ens33
+	UUID=c1a941ed-09f8-4ce6-ba06-2ec2013fc1cc
+	DEVICE=ens33
+
+	NM_CONTROLLER=no
+	ONBOOT=yes
+	BOOTPROTO=dhcp
+	USERCTL=no
+	```
 
 
 ### 网络管理命令
