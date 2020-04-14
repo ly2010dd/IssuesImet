@@ -265,7 +265,7 @@ free -m  #查看虚拟内存
 ### crontab简介
 - crontab命令存放在crontab文件中以供之后读取和执行
 - crontab存储的指令会被其守护进程crond激活
-- crond守护进程驻留在后台，每分钟检查一次是否有预定作业要执行
+- crond守护驻留在后台，每分钟检查一次是否有预定作业要执行
 - 在固定的间隔时间执行（分、时、日、月、周）
     ```
     # Example of job definition:
@@ -731,6 +731,14 @@ free -m  #查看虚拟内存
     ```
 
 ### Linux进程管理
+
+- 常用
+    - kill进程名
+    ```
+    pkill xxx
+    ps -ef |grep xxx|awk '{print $1}' |xargs kill -9
+    jps |grep xxx|awk '{print $1}' |xargs kill -9
+    ```
 
 - top命令
     - top的第一行
