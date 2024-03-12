@@ -586,6 +586,16 @@ free -m  #查看虚拟内存
         # 或者匹配不包含"baidu"的内容
         echo 'www.shiyanlou.com\nwww.baidu.com\nwww.google.com' | grep -Ev 'www\.baidu\.com'
         ```
+    - and or not
+        ```
+        grep 'pattern1\|pattern2' filename
+        grep -E 'pattern1|pattern2' filename
+        egrep 'pattern1|pattern2' filename
+
+        grep -E 'pattern1.*pattern2' filename
+        
+        grep -v 'pattern1' filename
+        ```
 - sed命令
     - 用法
         ```
